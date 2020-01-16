@@ -4,7 +4,6 @@ import qualified Database.MySQL.Simple as Sql
 import qualified Control.SSH.Tunnel as Ssh
 import Control.Monad.Reader
 import Control.Monad.Except
-import Control.Exception (SomeException)
 
 
 

@@ -11,8 +11,8 @@ import qualified Database.MySQL.Simple as Sql
 
 
 runProgram :: ProgramEnv -> ProgramM () -> IO ()
-runProgram env program = do
-  result <- runReaderT (runExceptT program) env
+runProgram env program' = do
+  result <- runReaderT (runExceptT program') env
   case result of
     Left e -> print e
     Right () -> return ()

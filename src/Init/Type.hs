@@ -19,6 +19,7 @@ data InitState = InitState {
 }
 type InitM = ExceptT InitError (StateT InitState IO)
 
+runInit :: ThreadId -> InitM a -> IO ((Either InitError a), InitState)
 runInit threadId' exec = runStateT (runExceptT exec) (InitState Nothing Nothing threadId')
 
 asks :: (InitState -> a) -> InitM a

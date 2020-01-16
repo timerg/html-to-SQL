@@ -1,4 +1,5 @@
 .stack-work/
 html-to-sql.cabal
+ssh-temp/
 *~
 env/

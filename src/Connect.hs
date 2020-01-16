@@ -37,7 +37,6 @@ tunnelConfig = do
 connectTunnel :: InitM SshTunnel
 connectTunnel = do
   filePath <- decodeString <$> getEnv "SSH_TUNNELINFO"
-  -- liftIO $ loadSshTunnel filePath >>= closeSshTunnel
   tunnelConfig' <- tunnelConfig
   (_, tunnel) <- liftIO $ makeSshTunnel tunnelConfig' defaultManagerSettings
   liftIO $ saveSshTunnel filePath tunnel
@@ -82,8 +81,12 @@ closeAll sshTunnel' sqlConnection' = do
     Nothing -> return ()
     Just sc -> close sc
   case sshTunnel' of
-    Nothing ->
-      loadSshTunnel "./ssh-temp/tunnelInfo" >>= closeSshTunnel
+    Nothing -> do
+      filePath <- getEnvIO "SSH_TUNNELINFO"
+      case filePath of
+        Nothing -> return ()
+        Just fp ->
+          loadSshTunnel (decodeString fp) >>= closeSshTunnel
     Just st' -> closeSshTunnel st'
 
 

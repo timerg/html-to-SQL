@@ -9,6 +9,18 @@ import qualified Control.Exception as Exception
 import Data.Scientific (toBoundedInteger)
 import Data.Text
 
+
+
+getEnvIO :: String -> IO (Maybe String)
+getEnvIO key = do
+  result <- Exception.try $ Sys.getEnv key
+  case result of
+    Left e -> do
+      print (e :: Exception.SomeException)
+      return $ Nothing
+    Right i -> return $ Just i
+
+
 getEnv :: String -> InitM String
 getEnv key = do
   result <- liftIO $ Exception.try $ Sys.getEnv key
